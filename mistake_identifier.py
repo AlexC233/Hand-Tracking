@@ -69,68 +69,42 @@ The mistakes are as follows (the numbers correspond to the index of the boolean 
 3. Thumb is too low.
 See: https://docs.google.com/document/d/158R2p73HYC6tiNJWN3kmQfs1sC8OL2WKY25BcG7B2iY/edit#heading=h.1iffdz15pj8z
 '''
-
-# HELPER FUNCTION.
-def check_required_angles(angle1: int, angle2: int, angle3: int) -> bool:
-    # Input.
-    '''
-    Three angles which correspond to a given finger, in degrees.
-    '''
-    # Output.
-    '''
-    Return True if the angles are between 6.6 degrees of each other. Return False otherwise.
-    '''
-
-    if abs(angle1 - angle2) <= 6.6 and abs(angle1 - angle3) <= 6.6 and abs(angle2 - angle3) <= 6.6:
-        return True
-    return False
-
-
-# Group the fingers together as an array of arrays.
-fingers = [
-    [0, 1, 2],  # Thumb MCP.
-    [2, 3, 4],
-    [5, 6, 7],
-    [6, 7, 8],
-    [9, 10, 11],
-    [10, 11, 12],
-    [13, 14, 15],
-    [14, 15, 16],
-    [17, 18, 19],
-    [18, 19, 20]  # Pinky PIP.
-]
-
-
 def mistake_identifier(coordinates:np.array, angles:np.array)->tuple:
-    # Eventual output.
-    result = [True, True, True, True]
-
-    # The pinkie finger's joints.
-    pinkieMCP = [17, 18, 19]
-    pinkiePIP = [18, 19, 20]
+    '''Return a tuple of 4 booleans, with each boolean representing whether one of four mistakes has been made.
+    True means the mistake has been made, False means it has not been made.'''
+    # Assume all mistakes are being made.
+    result = [True, False, False, False]
     
-    # Loop through the fingers.
-    for f in fingers:
-        angle1 = angles[f[0]]
-        angle2 = angles[f[1]]
-        angle3 = angles[f[2]]
-
-        # Fingers are flat.
-        if not check_required_angles(angle1, angle2, angle3):
+    # Note: More negative z-values are higher up.
+    
+    # check for flat fingers
+    # check if ALL of angles 2-9 are within 6.6 degrees of 180 degrees.
+    for i in range(2, 10):
+        if np.abs(angles[i] - 180) > 6.6:
             result[0] = False
+            break
 
-        # Excessive tension in the pinky (pinky too high/straight).
-        if not (f == pinkieMCP and check_required_angles(angle1, angle2, angle3)) or not (f == pinkiePIP and check_required_angles(angle1, angle2, angle3)):
-            result[2] = False
-
-    # Wrists are too low (presumably, their wrists are at 0 degrees when in line with the keyboard).
-    if angles[0] > 0:
+    # Wrists are too low 
+    # check if the wrist is below the thumb tip or the angle of elevation is greater than 45 degrees.
+    # since the wrist is the origin, we can just check the z-coordinate of the thumb tip.
+    if angles[10] < -18:
         result[1] = True
+        
+    # Excessive tension in the pinky
+    # check if the pinky tip is above the index, middle, or ring tip and the pinky joint angles are nearly 180 degrees.
+    for i in [8, 12, 16]:
+        if coordinates[20][2] < coordinates[i][2] - 0.03:
+            result[2] = True
+            break
+    for i in range(2):
+        if np.abs(angles[8 + i] - 180) > 10:
+            result[2] = False
+            break    
 
     # Thumb is too low.
-    if coordinates[8] - coordinates[4] > 0:
+    # if the thumb is below the index finger.
+    if coordinates[4][2] > coordinates[8][2] + 0.03:
         result[3] = True
-
 
     return tuple(result)
 
