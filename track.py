@@ -103,9 +103,10 @@ cam2 = cv2.VideoCapture(2)
 # cam2.set(3, length)
 # cam2.set(4, width)
 
+# cam1 = None
 # cam2 = None
 
-inverted = False
+inverted = True
 
 raw = {"cam1":
     {"use": True, "cam": cam1, "image": None},
@@ -147,7 +148,6 @@ mpDraw = mp.solutions.drawing_utils
 pTime = 0
 cTime = 0
 
-# functionrize everything in the while True loop
 def get_image(cam:str)->None:
     if raw[cam]["use"]:
         success, img = raw[cam]["cam"].read()
@@ -190,22 +190,22 @@ def get_coordinates(cam:str, hand, handedness, handnum:int)->None:
     #     results[cam][handedness]["coordinates"] = np.vstack((results[cam][handedness]["coordinates"], coord))
         
 def display_angles(cam:str, handedness)->None:
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][0] , 1)), (int(results[cam][handedness]["screen_pos"][2] [0]), int(results[cam][handedness]["screen_pos"][2] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Thumb MCP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][1] , 1)), (int(results[cam][handedness]["screen_pos"][3] [0]), int(results[cam][handedness]["screen_pos"][3] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Thumb IP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][2] , 1)), (int(results[cam][handedness]["screen_pos"][6] [0]), int(results[cam][handedness]["screen_pos"][6] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Index MCP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][3] , 1)), (int(results[cam][handedness]["screen_pos"][7] [0]), int(results[cam][handedness]["screen_pos"][7] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Index PIP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][4] , 1)), (int(results[cam][handedness]["screen_pos"][10][0]), int(results[cam][handedness]["screen_pos"][10][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Middle MCP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][5] , 1)), (int(results[cam][handedness]["screen_pos"][11][0]), int(results[cam][handedness]["screen_pos"][11][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Middle PIP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][6] , 1)), (int(results[cam][handedness]["screen_pos"][14][0]), int(results[cam][handedness]["screen_pos"][14][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Ring MCP
-    cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][7] , 1)), (int(results[cam][handedness]["screen_pos"][15][0]), int(results[cam][handedness]["screen_pos"][15][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Ring PIP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][0] , 1)), (int(results[cam][handedness]["screen_pos"][2] [0]), int(results[cam][handedness]["screen_pos"][2] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Thumb MCP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][1] , 1)), (int(results[cam][handedness]["screen_pos"][3] [0]), int(results[cam][handedness]["screen_pos"][3] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Thumb IP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][2] , 1)), (int(results[cam][handedness]["screen_pos"][6] [0]), int(results[cam][handedness]["screen_pos"][6] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Index MCP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][3] , 1)), (int(results[cam][handedness]["screen_pos"][7] [0]), int(results[cam][handedness]["screen_pos"][7] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Index PIP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][4] , 1)), (int(results[cam][handedness]["screen_pos"][10][0]), int(results[cam][handedness]["screen_pos"][10][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Middle MCP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][5] , 1)), (int(results[cam][handedness]["screen_pos"][11][0]), int(results[cam][handedness]["screen_pos"][11][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Middle PIP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][6] , 1)), (int(results[cam][handedness]["screen_pos"][14][0]), int(results[cam][handedness]["screen_pos"][14][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Ring MCP
+    # cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][7] , 1)), (int(results[cam][handedness]["screen_pos"][15][0]), int(results[cam][handedness]["screen_pos"][15][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Ring PIP
     cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][8] , 1)), (int(results[cam][handedness]["screen_pos"][18][0]), int(results[cam][handedness]["screen_pos"][18][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Pinky MCP
     cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][9] , 1)), (int(results[cam][handedness]["screen_pos"][19][0]), int(results[cam][handedness]["screen_pos"][19][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Pinky PIP
     cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["angles"][10], 1)), (int(results[cam][handedness]["screen_pos"][0] [0]), int(results[cam][handedness]["screen_pos"][0] [1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1) # Wrist Elevation
 
-def display_coordinates(cam:str, handedness)->None:
-    for i in range(21):
+def display_coordinates(cam:str, handedness:str, joints:list)->None:
+    for i in joints:
         cv2.putText(raw[cam]["image"], str(np.round(results[cam][handedness]["coordinates"][i], 2)), (int(results[cam][handedness]["screen_pos"][i][0]), int(results[cam][handedness]["screen_pos"][i][1])), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1)
-
+ 
 def display_image(cam:str)->None:
     cv2.imshow(cam, raw[cam]["image"])
     cv2.waitKey(1)
@@ -231,7 +231,7 @@ def get_hand(cam:str, hand, handnum)->None:
     results[cam][handedness]["angles"] = get_all_angles(results[cam][handedness]["coordinates"])
     
     display_angles(cam, handedness)
-    # display_coordinates(cam, handedness)
+    display_coordinates(cam, handedness, [4, 8, 12, 16, 20])
     
 def process_hands(cam:str)->None:
     camlandmarks = results[cam]["lms"]
@@ -298,13 +298,25 @@ def get_results()->None:
         
     # get the coordinates closest to the center of the screen
     if left_coords.size:
-        left_distances = np.array([distance_from_center(coord) for coord in left_coords])
+        left_distances = np.empty(left_coords.shape[2])
+        for i in range(left_coords.shape[2]):
+            sum = 0
+            for j in range(21):
+                sum += distance_from_center(left_coords[j, :, i])
+            left_distances[i] = sum
+            
         closest_left = np.argmin(left_distances)
-        merged_results["left"]["coordinates"] = left_coords[closest_left]
+        merged_results["left"]["coordinates"] = left_coords[:, :, closest_left]
     if right_coords.size:
-        right_distances = np.array([distance_from_center(coord) for coord in right_coords])
+        right_distances = np.empty(right_coords.shape[2])
+        for i in range(right_coords.shape[2]):
+            sum = 0
+            for j in range(21):
+                sum += distance_from_center(right_coords[j, :, i])
+            right_distances[i] = sum
+        
         closest_right = np.argmin(right_distances)
-        merged_results["right"]["coordinates"] = right_coords[closest_right]          
+        merged_results["right"]["coordinates"] = right_coords[:, :, closest_right]          
         
     # test prints
     # check if a hand is detected
@@ -312,13 +324,40 @@ def get_results()->None:
     #     print("Left Hand Detected")
     # if merged_results["right"]["detected"]:
     #     print("Right Hand Detected")
+    
+def posture_check()->None:
+    ''' Check the posture of the hands. '''
+    # if no hands are detected, return
+    if not merged_results["left"]["detected"] and not merged_results["right"]["detected"]:
+        return
+    left_result, right_result = (False, False, False, False), (False, False, False, False)
+    # if the left hand is detected
+    if merged_results["left"]["detected"]:
+        left_result = mi.mistake_identifier(merged_results["left"]["coordinates"], merged_results["left"]["angles"])
+    # if the right hand is detected
+    if merged_results["right"]["detected"]:
+        right_result = mi.mistake_identifier(merged_results["right"]["coordinates"], merged_results["right"]["angles"])
+
+    # test print
+    # print something if a mistake is detected
+    mistakes = ["Flat Fingers", "Raise Wrists", "Flying Pinkie", "Thumb Falling"]
+    for i in range(4):
+        if left_result[i] or right_result[i]:
+            print(mistakes[i])
+    
+
+def main()->None:
+    track()
+    get_results()
+    posture_check()
 
 if __name__ == "__main__":    
     while True:
         try:
-            track()
-            get_results()
+            main()
         except KeyboardInterrupt:
             for key in raw:
                 raw[key]["cam"].release()
             cv2.destroyAllWindows()
+        except Exception as e:
+            print(e)
