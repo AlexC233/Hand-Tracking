@@ -249,7 +249,7 @@ def run_track(cam:str)->None:
     get_image(cam)
     process_image(cam)
     process_hands(cam)
-    display_fps(cam)
+    # display_fps(cam)
     display_image(cam)
             
 def track()->None:
@@ -325,11 +325,11 @@ def get_results()->None:
     # if merged_results["right"]["detected"]:
     #     print("Right Hand Detected")
     
-def posture_check()->None:
+def posture_check()->tuple:
     ''' Check the posture of the hands. '''
     # if no hands are detected, return
     if not merged_results["left"]["detected"] and not merged_results["right"]["detected"]:
-        return
+        return (False, False, False, False)
     left_result, right_result = (False, False, False, False), (False, False, False, False)
     # if the left hand is detected
     if merged_results["left"]["detected"]:
@@ -340,16 +340,20 @@ def posture_check()->None:
 
     # test print
     # print something if a mistake is detected
-    mistakes = ["Flat Fingers", "Raise Wrists", "Flying Pinkie", "Thumb Falling"]
-    for i in range(4):
-        if left_result[i] or right_result[i]:
-            print(mistakes[i])
+    # mistakes = ["Flat Fingers", "Raise Wrists", "Flying Pinkie", "Thumb Falling"]
+    # for i in range(4):
+    #     if left_result[i] or right_result[i]:
+    #         print(mistakes[i])
     
-
-def main()->None:
+    # if either hand has a mistake, then return the mistake
+    return tuple([left_result[i] or right_result[i] for i in range(4)])
+    
+def main()->tuple:
+    '''Main function. Returns the detected mistakes.'''
     track()
     get_results()
-    posture_check()
+    return posture_check()
+    
 
 if __name__ == "__main__":    
     while True:
