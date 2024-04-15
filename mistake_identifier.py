@@ -152,12 +152,3 @@ def alert_needed(errors:tuple, threshold:int)->tuple:
             need_alert[i] = False
     
     return tuple(need_alert)
-
-
-
-
-# If you have extra time
-'''
-Figure out how to make this all work with two hands.
-'''
-# We'll have to discuss this aspect further.
